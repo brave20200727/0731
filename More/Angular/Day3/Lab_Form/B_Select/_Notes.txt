@@ -1,0 +1,26 @@
+Prepare: 
+1.  index.html 加入
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+
+2.  Ctrl + `
+ng serve --host 0.0.0.0 --port 8080 --live-reload-port 8081
+
+3.  app.component.html 的初始內容在 Begin_app.component.html
+
+
+
+____________________________________________________________
+Lab:
+
+1.  練習雙向繫結
+
+2.  代入下列陣列資料到 select:
+    [
+      {id: 2, text: "Taipei"},
+      {id: 4, text: "TaiChung"},
+      {id: 6, text: "TaiNan"}
+    ]
+
+
+
+

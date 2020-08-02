@@ -1,0 +1,652 @@
+Lab: 使用 Augular 的 Component 建構使用者操作畫面
+
+
+1.  建立專案與元件
+
+
+1.1 在檔案總管，滑鼠右鍵點按例如 c:\Lab 資料夾
+    | 快捷功能表 Git Bach Here
+
+
+1.2 輸入下列指令，建立一個新的專案
+    ng new tododemo
+
+    <Note>
+    建議將本操作說明檔，也複製貼入專案資料夾
+
+
+1.3 在檔案總管，滑鼠右鍵點按 tododemo 資料夾 | Open with Code
+
+    <Note>
+    接下來，本文均以 tododemo 為對象進行操作說明。
+
+
+1.4 在 VS Code 按下 Ctrl + ` 組合鍵以啟動TERMINAL終端機視窗
+    在終端機視窗繼續輸入下列指令，以 angular-cli 建立三個元件:
+
+ng g c header
+ng g c add-form
+ng g c todo-items
+
+    <Note> 請確認一下: tododemo/src/app 之下是否多出下列子資料夾:
+    - add-form
+    - header
+    - todo-items
+    
+
+1.5 編輯 src/app/header/header.component.html，內容如下:
+
+<h1>歡迎來到 ToDo App</h1>
+
+
+1.6 編輯 src/app/app.component.html，內容如下:
+<app-header></app-header>
+
+
+1.7 在終端機視窗輸入下列指令以啟動網站伺服器:
+ng serve --host 0.0.0.0 --port 8080 --live-reload-port 8081
+
+<Note>「終端機視窗」請勿關閉。
+
+
+1.8 啟動瀏覽器，連接 http://localhost:8080
+
+    <Note> 如果一切順利，畫面會出現「歡迎來到 ToDo App」字樣
+
+
+1.7 編輯 src/app/add-form/add-form.component.html，內容如下:
+
+<input type="text" placeholder="請輸入待辦事項">
+<button>增加</button>
+
+
+
+1.8 編輯 src/app/todo-items/todo-items.component.html，內容如下:
+
+<ul>
+    <li>
+        <label for="chk1">
+            <input id="chk1" type="checkbox" > 
+            Todo Item 1
+        </label> | <a href="#">刪除</a>
+    </li>
+    <li>
+        <label for="chk2">
+            <input id="chk2" type="checkbox" > 
+            Todo Item 2
+        </label> | <a href="#">刪除</a>
+    </li>
+    <li>
+        <label for="chk3">
+            <input id="chk3" type="checkbox" > 
+            Todo Item 3
+        </label> | <a href="#">刪除</a>
+    </li>
+</ul>
+
+
+
+1.9 編輯 src/app/app.components.html，內容如下:
+
+<app-header></app-header>
+<app-add-form></app-add-form>
+<app-todo-items></app-todo-items>
+
+
+<Note> 完成之後，在瀏覽器檢視作品
+
+
+1.Q 請試著回答下列問題:
+(1) app.components.html 的第一行是什麼?
+(2) 於 src/app/header/header.component.ts，selector 屬性值是什麼?
+(3) app.components.html 怎麼知道該置入哪一個元件的畫面?
+
+
+
+
+2.  資料繫結 (Data Binding)
+
+
+2.1 編輯 src/app/header/header.component.html，內容如下:
+
+<h1>
+    {{title}}
+</h1>
+<h2>
+    {{ '現在時間: ' + getDate() }}
+</h2>
+
+
+
+2.2 編輯 src/app/header/header.component.ts，內容如下:
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.css']
+})
+export class HeaderComponent implements OnInit {
+  
+  title = "歡迎來到 Todo App";
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  getDate() {
+    return new Date();
+  }
+
+}
+
+
+2.Q 請簡述 HTML 如何使用 title 與 getDate() ?
+
+
+
+
+3.  事件處理
+
+
+3.1 編輯 src/app/add-form/add-form.component.html，內容如下:
+
+<input type="text" [placeholder]="placeholderText">
+<button (click)="addTodo($event)">增加</button>
+
+
+
+3.2 編輯 src/app/add-form/add-form.component.ts，內容如下:
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-add-form',
+  templateUrl: './add-form.component.html',
+  styleUrls: ['./add-form.component.css']
+})
+export class AddFormComponent implements OnInit {
+
+  placeholderText = "請在此輸入待辦事項";
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  addTodo($event) {
+    console.log("點按了一次「增加」按鈕:", $event);
+  }
+
+}
+
+
+
+3.3 於瀏覽器按下 Ctrl + Shift + I 啟動開發人員工具
+    切換到 Console 頁籤
+    點按我們作品中的「增加」按鈕
+    檢視 Console 頁籤出現的內容。
+
+
+
+
+4.  單向與雙向資料繫結
+
+
+4.1 編輯 src/app/add-form/add-form.component.html，內容如下：
+
+<p>{{ todoText }}</p>
+<input type="text" [value]="todoText" (input)="changeTodoText($event)" [placeholder]="placeholderText">
+<button (click)="addTodo($event)">增加</button>
+
+
+
+4.2 編輯 src/app/add-form/add-form.component.ts，內容如下：
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-add-form',
+  templateUrl: './add-form.component.html',
+  styleUrls: ['./add-form.component.css']
+})
+export class AddFormComponent implements OnInit {
+
+  placeholderText = "請在此輸入待辦事項";
+  todoText = "";
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  addTodo($event) {
+    console.log("點按了一次「增加」按鈕:", $event);
+  }
+  
+  changeTodoText($event) {
+    this.todoText = ($event.target as HTMLInputElement).value;
+  }
+  
+}
+
+
+
+4.3 於瀏覽器重新整理我們的作品。
+    一切正常的話，在文字輸入方塊鍵入的內容，
+    會即時出現在畫面上方。
+
+
+4.4 請試著簡述上述程式與資料繫結的流程。
+
+
+4.5 編輯 src/app/add-form/add-form.component.html，內容如下：
+
+<p>{{ todoText }}</p>
+<input type="text" [(ngModel)]="todoText" [placeholder]="placeholderText">
+<button (click)="addTodo($event)">增加</button>
+
+
+
+4.6 編輯 src/app/add-form/add-form.component.ts，內容如下：
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-add-form',
+  templateUrl: './add-form.component.html',
+  styleUrls: ['./add-form.component.css']
+})
+export class AddFormComponent implements OnInit {
+
+  placeholderText = "請在此輸入待辦事項";
+  todoText = "";
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  addTodo($event) {
+    console.log("點按了一次「增加」按鈕:", $event);
+  }
+
+  // changeTodoText($event) {
+  //   this.todoText = ($event.target as HTMLInputElement).value;
+  // }
+
+}
+
+
+4.7 於瀏覽器重新整理我們的作品。
+    一切正常的話，在文字輸入方塊鍵入的內容，
+    會即時出現在畫面上方。
+
+
+
+
+5.  資料結構與資料處理
+
+
+5.1 於「終端機視窗」，按下 Ctrl + C 中止伺服器程式
+    輸入下列指令以建立 Interface:
+
+ng g interface shared/TodoItem
+
+
+5.2 編輯 src/app/shared/todo-item.ts，內容如下:
+
+export interface TodoItem {
+    id: number;
+    value: string;
+    done: boolean;
+}
+
+
+5.3 編輯 src/app/app.component.ts，內容如下:
+
+import { Component } from '@angular/core';
+
+import { TodoItem } from './shared/todo-item';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+
+  todoItems: TodoItem[] = [{
+    id: 1,
+    value: 'Todo Item No.1',
+    done: false
+  }, {
+    id: 2,
+    value: 'Todo Item No.2',
+    done: true
+  }, {
+    id: 3,
+    value: 'Todo Item No.3',
+    done: false
+  }];
+
+
+}
+
+
+
+5.4 編輯 src/app/app.component.html，內容如下:
+
+<app-header></app-header>
+<app-add-form></app-add-form>
+<app-todo-items [items]="todoItems"></app-todo-items>
+
+
+5.5 編輯 src/app/todo-items/todo-items.component.ts，內容如下:
+
+import { Component, OnInit, Input} from '@angular/core';
+
+import { TodoItem } from './../shared/todo-item';
+
+@Component({
+  selector: 'app-todo-items',
+  templateUrl: './todo-items.component.html',
+  styleUrls: ['./todo-items.component.css']
+})
+export class TodoItemsComponent implements OnInit {
+
+  @Input() items: TodoItem[];
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+}
+
+
+5.6 編輯 src/app/todo-items/todo-items.component.html:，內容如下:
+
+<ul>
+  <li *ngFor="let item of items">
+    <label htmlFor="chk_{{item.id}}">     
+       <input id="chk_{{item.id}}" type="checkbox" [checked]="item.done"> {{ item.value }} 
+    </label> |
+    <a href="#" (click)="delete(item)">刪除</a>
+  </li>
+</ul>
+
+
+5.7 在終端機視窗輸入下列指令以啟動網站伺服器:
+ng serve --host 0.0.0.0 --port 8080 --live-reload-port 8081
+
+<Note>「終端機視窗」請勿關閉。
+
+
+
+5.8 啟動瀏覽器，連接到 http://localhost:8080
+
+    <Note> 如果一切順利，畫面的各工作事項會是陣列的內容。
+    
+        
+5.9 哇! 一口氣改了好多檔案，請整理與簡述它們是怎麼運作的。
+
+
+
+
+6.  元件之間的資料交換
+
+
+6.1 編輯 src/app/add-form/add-form.component.ts，內容如下:
+
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+
+@Component({
+  selector: 'app-add-form',
+  templateUrl: './add-form.component.html',
+  styleUrls: ['./add-form.component.css']
+})
+export class AddFormComponent implements OnInit {
+
+  @Output() addTodoEvent = new EventEmitter();
+
+  placeholderText = '請輸入待辦事項';
+  todoText = '';
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  addTodo($event) {
+    this.addTodoEvent.emit(this.todoText);
+    console.log('輸入的文字為 : ' + this.todoText);
+  }
+
+  // changeTodoText($event) {
+  //   this.todoText = ($event.target as HTMLInputElement).value;
+  // }
+
+}
+
+
+
+6.2 編輯 src/app/add-form/add-form.component.html，內容如下:
+
+<input type="text" [(ngModel)]="todoText" [placeholder]="placeholderText" />
+<button (click)="addTodo($event)">增加</button>
+
+
+
+6.3 編輯 src/app/app.component.html，內容如下:
+
+<app-header></app-header>
+<app-add-form (addTodoEvent)=addTodoItem($event)></app-add-form>
+<app-todo-items [items]="todoItems"></app-todo-items>
+
+
+6.4 編輯 src/app/app.component.ts，內容如下:
+
+import { Component } from '@angular/core';
+
+import { TodoItem } from './shared/todo-item';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  todoItems: TodoItem[] = [{
+    id: 1,
+    value: 'Todo Item No.1',
+    done: false
+  }, {
+    id: 2,
+    value: 'Todo Item No.2',
+    done: true
+  }, {
+    id: 3,
+    value: 'Todo Item No.3',
+    done: false
+  }];
+
+  addTodoItem(text) {
+    this.todoItems.push({
+      id: (new Date()).getTime(),
+      value: text,
+      done: false
+    });
+  }
+
+
+}
+
+
+6.5 於瀏覽器重新整理我們的作品。
+    在文字輸入方塊鍵入新的待辦事項，
+    點按「增加」按鈕。
+
+
+
+6.6 上述練習，我們是如何自訂事件? 又是如何觸發事件的呢?
+
+
+
+
+7.  實作「已完成」功能
+
+
+7.1 編輯 src/app/todo-items.component.html，內容如下:
+
+<ul>
+  <li *ngFor="let item of items">
+    <label htmlFor="chk_{{item.id}}">     
+       <input id="chk_{{item.id}}" type="checkbox" [checked]="item.done" (click)="itemClick(item)"> {{ item.value }} 
+    </label> |
+    <a href="#">刪除</a>
+    <span *ngIf="item.done">(已完成)</span>
+  </li>
+</ul>
+
+
+
+7.2 編輯 src/app/todo-items.component.ts，內容如下:
+
+import { Component, OnInit, Input} from '@angular/core';
+
+import { TodoItem } from './../shared/todo-item';
+
+@Component({
+  selector: 'app-todo-items',
+  templateUrl: './todo-items.component.html',
+  styleUrls: ['./todo-items.component.css']
+})
+export class TodoItemsComponent implements OnInit {
+
+  @Input() items: TodoItem[];
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  itemClick(item) {
+    item.done = !item.done;
+  }  
+
+}
+
+
+7.3 於瀏覽器重新整理我們的作品。
+    點按各個待辦事項左側的核取方塊。
+
+
+
+
+8.  實作「刪除」功能
+
+
+8.1 編輯 src/app/todo-items/todo-items.component.html，內容如下:
+
+<ul>
+  <li *ngFor="let item of items">
+    <label htmlFor="chk_{{item.id}}">     
+       <input id="chk_{{item.id}}" type="checkbox" [checked]="item.done" (click)="itemClick(item)"> {{ item.value }} 
+    </label> |
+    <a href="#" (click)="delete(item)">刪除</a>
+    <span *ngIf="item.done">(已完成)</span>
+  </li>
+</ul>
+
+
+
+8.2 編輯 src/app/todo-items/todo-items.component.ts，內容如下:
+
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+
+import { TodoItem } from './../shared/todo-item';
+
+@Component({
+  selector: 'app-todo-items',
+  templateUrl: './todo-items.component.html',
+  styleUrls: ['./todo-items.component.css']
+})
+export class TodoItemsComponent implements OnInit {
+
+  @Input() items: TodoItem[];
+
+  @Output() deleteTodoEvent = new EventEmitter();
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+
+  itemClick(item) {
+    item.done = !item.done;
+  }
+
+  delete(item) {
+    this.deleteTodoEvent.emit(item);
+  }
+
+}
+
+
+
+8.3 編輯 src/app/app.component.html，內容如下:
+
+<app-header></app-header>
+<app-add-form (addTodoEvent)=addTodoItem($event)></app-add-form>
+<app-todo-items [items]="todoItems" (deleteTodoEvent)="deleteTodoItem($event)"></app-todo-items>
+
+
+
+8.4 編輯 src/app/app.component.ts:，內容如下:
+
+import { Component } from '@angular/core';
+
+import { TodoItem } from './shared/todo-item';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+export class AppComponent {
+  todoItems: TodoItem[] = [{
+    id: 1,
+    value: 'Todo Item No.1',
+    done: false
+  }, {
+    id: 2,
+    value: 'Todo Item No.2',
+    done: true
+  }, {
+    id: 3,
+    value: 'Todo Item No.3',
+    done: false
+  }];
+
+  addTodoItem(text) {
+    this.todoItems.push({
+      id: (new Date()).getTime(),
+      value: text,
+      done: false
+    });
+  }
+
+  deleteTodoItem(item) {
+    console.log('刪除', item);
+    this.todoItems.splice(this.todoItems.indexOf(item), 1);
+  }
+
+}
+
+
+8.5 於瀏覽器重新整理我們的作品。
+    點按某個待辦事項右側的「刪除」。
+

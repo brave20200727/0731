@@ -1,0 +1,22 @@
+<form class="form-horizontal">
+    <fieldset>
+    
+    <!-- Form Name -->
+    <legend>Lab Form</legend>
+    
+    <!-- Multiple Radios (inline) -->
+    <div class="form-group">
+      <label class="col-md-4 control-label" for="bloodType">Blood type:</label>
+      <div class="col-md-4"> 
+        <label *ngFor="let bloodTypeItem of bloodTypeList"
+          class="radio-inline" for="bloodType-0">
+          <input type="radio" name="bloodType" id="bloodType-0" 
+            [(ngModel)]="bloodType" [value]="bloodTypeItem.id">
+          {{bloodTypeItem.text}}
+        </label> 
+      </div>
+    </div>
+    
+    </fieldset>
+    BloodType: {{bloodType}}
+</form>

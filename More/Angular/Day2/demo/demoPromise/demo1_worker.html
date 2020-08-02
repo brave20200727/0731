@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <input type="text">
+    <input type="button" id="btnGo" value="Go">
+    <div id="debug"></div>
+    <script>
+        
+        btnGo.onclick = function () {
+            if (typeof(window.Worker) === "undefined") {
+                return;
+            };
+            
+            var w = new Worker("longTimeWork.js");
+            w.onmessage = function (e) {
+                debug.innerText = e.data;
+                w.terminate();
+            }            
+        }
+
+        
+        
+    </script>
+</body>
+</html>

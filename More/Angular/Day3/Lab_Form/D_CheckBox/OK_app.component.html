@@ -1,0 +1,21 @@
+<form class="form-horizontal">
+    <fieldset>
+    
+    <!-- Form Name -->
+    <legend>Lab Form</legend>
+    
+    <div class="form-group">
+      <label class="col-md-4 control-label">&nbsp;</label>
+      <div class="col-md-4">
+        <div class="checkbox">
+          <label for="cities-0">
+            <input [(ngModel)]="mailMe" type="checkbox" name="mailMe" id="mailMe" value="yes">
+            訂閱產品通知
+          </label>
+        </div>
+      </div>
+    </div>
+    
+    </fieldset>
+    test: {{mailMe}}
+</form>

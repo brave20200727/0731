@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <input type="text">
+    <input type="button" id="btnGo" value="Go">
+    <div id="debug"></div>
+    <script>
+
+        function longTimeWork() {
+            var now = (new Date()).getTime();
+                while ((new Date()).getTime() - now <= 3000) {
+            }
+        }
+
+        btnGo.onclick = function () {
+            longTimeWork();
+            debug.innerText = "Done" ;
+        };        
+        
+    </script>
+</body>
+</html>

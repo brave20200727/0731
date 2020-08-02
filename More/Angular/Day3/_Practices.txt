@@ -1,0 +1,195 @@
+﻿【課堂練習】
+
+
+--------------------------------------------------
+100 Hello 練習，實作一個 Say Hello 的小程式
+
+    Your name: |_____________   <OK>
+    Hello! _____________
+
+
+
+(防雷頁)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------
+110 Hello 練習，公佈解答(一):
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-greeting',
+  template: `
+    <input type="text" [(ngModel)] = "who" >
+    <button (click)="sayHello()">OK2</button>
+    <p>Hello! {{who}} </p>
+  `,  
+  styleUrls: ['./greeting.component.css']
+})
+export class GreetingComponent implements OnInit {
+  
+  who = "";
+  
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  sayHello() {
+
+  }
+
+}
+
+
+
+
+--------------------------------------------------
+120 Hello 練習，公佈解答(二):
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-greeting',
+  template: `
+    <input type="text" [(ngModel)] = "who" >
+    <button (click)="sayHello()">OK</button>
+    <p>Hello! {{userName}} </p>
+  `,  
+  styleUrls: ['./greeting.component.css']
+})
+export class GreetingComponent implements OnInit {
+  
+  who = "";
+  
+  userName = "World";
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  sayHello() {
+    this.userName = this.who;
+  }
+
+}
+
+
+
+
+--------------------------------------------------
+130 Hello 練習，公佈解答(三):
+
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+
+@Component({
+  selector: 'app-greeting',
+  template: `
+    <input #who type="text" >
+    <button (click)="sayHello()">OK</button>
+    <p>Hello! {{ userName }} </p>
+  `,  
+  styleUrls: ['./greeting.component.css']
+})
+export class GreetingComponent implements OnInit {
+  
+  @ViewChild('who') who: ElementRef;
+  userName: string = "";
+
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  sayHello() {
+    // console.log(this.who);
+    this.userName = this.who.nativeElement.value;
+  }
+
+}
+
+
+
+--------------------------------------------------
+140 Hello 練習，公佈解答(四):
+
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-greeting',
+  template: `
+    <input #who type="text" >
+    <button (click)="sayHello()">OK</button>
+    <p>Hello! {{ who.value }} </p>
+  `,  
+  styleUrls: ['./greeting.component.css']
+})
+export class GreetingComponent implements OnInit {
+  
+  constructor() { }
+
+  ngOnInit() {
+  }
+  
+  sayHello() {
+
+  }
+
+}
+
+
+
+
+--------------------------------------------------
+200 本資料夾有個 myla.jpg 的圖片，想要顯示該圖片...
+
+<img src="???"> 請問 src 屬性該怎麼寫呢?
+
+
+
+
+--------------------------------------------------
+300 任選一個已完成的專案，執行下列指令:
+    ng build
+    正常的話，會產生一個 dist 資料夾。
+    據說，只要將 dist 資料夾的內容佈署到網站伺服器
+    (例如 Apache) 即可。
+    
+    可是，畫面卻一直卡在 loding... 不動，怎麼辦?
+
+
+
+
+--------------------------------------------------
+400 完成 Lab_Form 的各個練習
+
+
+
+--------------------------------------------------
+500 完成 Lab_WhereIsCat 練習
+

@@ -1,0 +1,539 @@
+﻿Lab: Angular 課堂練習：下拉式選單
+
+
+
+
+1.  建構專案與元件
+
+
+1.1 在檔案總管，滑鼠右鍵點按例如 c:\Lab 資料夾
+    | 快捷功能表 Git Bach Here
+
+
+1.2 輸入下列指令，建立一個新的專案
+    ng new DropdownListLab
+
+    <Note>
+    建議將本操作說明檔，也複製貼入專案資料夾
+
+
+1.3 在檔案總管，滑鼠右鍵點按 DropdownListLab 資料夾 | Open with Code
+
+    <Note>
+    接下來，本文均以 DropdownListLab 為對象進行操作說明。
+
+
+1.4 編輯 src/app/app.component.ts，內容如下：
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities = ["台北", "台中", "台南"];
+
+}
+
+
+1.5 在 VS Code 按下 Ctrl + ` 組合鍵以啟動TERMINAL終端機視窗
+    在終端機視窗輸入下列指令:
+
+ng serve --host 0.0.0.0 --port 8080 --live-reload-port 8081
+
+<Note>「終端機視窗」請勿關閉。
+
+
+1.6 啟動瀏覽器，連接 http://localhost:8080
+
+    <Note> 如果一切順利，畫面會出現 Dropdown List Lab 字樣。
+
+
+1.7 編輯 src/app/app.component.html，
+    請問：如何以下拉式選單顯示 cities 陣列的內容供使用者選擇：
+
+（防雷頁）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.7a【參考解答】src/app/app.component.html 內容如下：
+<h1>
+  {{title}}
+</h1>
+
+<select>
+    <option [value]="i" *ngFor="let i of cities">{{i}}</option>
+</select>
+
+
+
+1.8 請問，當使用者改變下接式選單的內容後，
+    如何得知使用者選的是哪一座城市?
+    請試著完成 HTML 與 TS 的內容。
+
+（防雷頁）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.8a【參考解答】
+
+
+
+【參考解答】src/app/app.component.html 內容如下：
+
+<h1>
+  {{title}}
+</h1>
+
+<select [(ngModel)]="selectedCity" (change)="onChange($event)">
+    <option [value]="i" *ngFor="let i of cities">{{i}}</option>
+</select>
+
+
+
+【參考解答】src/app/app.component.ts 內容如下：
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities = ["台北", "台中", "台南"];
+  selectedCity: string = "台北";
+  onChange($event) {
+      console.log(this.selectedCity);
+  }
+
+}
+
+
+    <Note>
+    於瀏覽器按下 Ctrl + Shift + I 啟動開發人員工具
+    切換到 Console 頁籤
+    切換不同的城市，檢視 Console 頁籤出現的內容。
+
+
+(Optional)
+1.9 請問，如果不使用雙向繫結的寫法，HTML 與 TS 要怎麼改?
+
+
+
+【參考解答】src/app/app.component.html 內容如下：
+
+<h1>
+  {{title}}
+</h1>
+
+<select (change)="onChange($event.target.value)">
+    <option [value]="i" *ngFor="let i of cities">{{i}}</option>
+</select>
+
+
+
+【參考解答】src/app/app.component.ts 內容如下：
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities = ["台北", "台中", "台南"];
+  selectedCity: string = "台北";
+  onChange($event) {
+      console.log($event);
+  }
+
+}
+
+
+
+
+2.  代入資料結構
+
+
+2.1 於「終端機視窗」，按下 Ctrl + C 中止伺服器程式
+    輸入下列指令以建立 Interface:
+
+ng g interface city
+
+
+
+2.2 編輯 src/app/city.ts，內容如下:
+
+export interface City {
+  id: number,
+  name: string,
+  district: string[]    
+}
+
+
+2.3 編輯 src/app/app.component.ts 內容如下：
+
+import { Component } from '@angular/core';
+
+import { City } from './city';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities: City[] = [
+    { 
+      id: 1,
+      name: "台北",
+      district: ["大安區", "城中區", "信義區"]
+    },
+    { 
+      id: 2,
+      name: "台中",
+      district: ["北屯區", "豐原區", "清水區"]
+    },
+    { 
+      id: 3,
+      name: "台南",
+      district: ["學甲區", "白河區", "麻豆區"]
+    }
+  ];
+
+}
+
+
+2.4 編輯 src/app/app.component.html 內容如下：
+
+<h1>
+  {{title}}
+</h1>
+
+<select>
+    <option [value]="i" *ngFor="let i of cities">{{i}}</option>
+</select>
+
+
+
+2.5 在終端機視窗輸入下列指令以啟動網站伺服器:
+ng serve --host 0.0.0.0 --port 8080 --live-reload-port 8081
+
+<Note>「終端機視窗」請勿關閉。
+
+
+
+2.6 啟動瀏覽器，連到 http://localhost:8080
+
+
+2.7 畫面中的下拉式選單都變成了 [object Object]，
+    請問 HTML 要怎麼修改?
+
+（防雷頁）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2.8 【參考解答】src/app/app.component.html 內容如下：
+
+<h1>
+  {{title}}
+</h1>
+
+<select [(ngModel)]="selectedCity">
+    <option [ngValue]="i" *ngFor="let i of cities">{{i.name}}</option>
+</select>
+
+
+
+2.9 選單的內容現在變成城市清單了，
+    可是，一開始的內容是空白的
+    請問如何預設為台中呢?
+
+（防雷頁）    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2.a 【參考解答】src/app/app.component.ts 內容如下：
+
+import { Component } from '@angular/core';
+
+import { City } from './city';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities: City[] = [
+    { 
+      id: 1,
+      name: "台北",
+      district: ["大安區", "城中區", "信義區"]
+    },
+    { 
+      id: 2,
+      name: "台中",
+      district: ["北屯區", "豐原區", "清水區"]
+    },
+    { 
+      id: 3,
+      name: "台南",
+      district: ["學甲區", "白河區", "麻豆區"]
+    }
+  ];
+  
+  selectedCity: City = this.cities[1];
+  
+
+}
+
+
+
+2.b 請問，當使用者改變下接式選單的內容後，
+    如何得知使用者選的是哪一座城市?
+    請試著完成 HTML 與 TS 的內容。
+
+（防雷頁）
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2.c 【參考解答】
+
+
+【參考解答】src/app/app.component.ts 內容如下：
+
+import { Component } from '@angular/core';
+
+import { City } from './city';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities: City[] = [
+    { 
+      id: 1,
+      name: "台北",
+      district: ["大安區", "城中區", "信義區"]
+    },
+    { 
+      id: 2,
+      name: "台中",
+      district: ["北屯區", "豐原區", "清水區"]
+    },
+    { 
+      id: 3,
+      name: "台南",
+      district: ["學甲區", "白河區", "麻豆區"]
+    }
+  ];
+  
+  selectedCity: City = this.cities[1];
+
+  onChange($event) {
+      this.selectedCity = $event;
+  }
+
+}
+
+
+
+【參考解答】src/app/app.component.html 內容如下：
+
+<h1>
+  {{title}}
+</h1>
+
+<select [(ngModel)]="selectedCity" (ngModelChange)="onChange($event)">
+    <option [ngValue]="i" *ngFor="let i of cities">{{i.name}}</option>
+</select>
+
+<hr>
+
+{{ selectedCity | json }}
+
+
+
+3.  連動式的兩個下拉式選單
+
+請另外置放一個行政區域的下拉式選單，
+使用者選「台北」時，行政區域的選單內容要改成: 大安區、城中區、信義區
+使用者選「台中」時，行政區域的選單內容要改成: 北屯區、豐原區、清水區
+
+（防雷頁）
+
+
+2.c 【參考解答】
+
+
+【參考解答】src/app/app.component.ts 內容如下：
+
+import { Component } from '@angular/core';
+
+import { City } from './city';
+
+@Component({
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+
+export class AppComponent {
+  title = 'Dropdown List Lab';
+  
+  cities: City[] = [
+    { 
+      id: 1,
+      name: "台北",
+      district: ["大安區", "城中區", "信義區"]
+    },
+    { 
+      id: 2,
+      name: "台中",
+      district: ["北屯區", "豐原區", "清水區"]
+    },
+    { 
+      id: 3,
+      name: "台南",
+      district: ["學甲區", "白河區", "麻豆區"]
+    }
+  ];
+  
+  selectedCity: City = this.cities[1];
+  districts: string[] = this.cities[1].district;
+
+  onChange($event) {
+      this.selectedCity = $event;
+      this.districts = this.selectedCity.district;
+  }
+
+}
+
+
+
+【參考解答】src/app/app.component.html 內容如下：
+
+<h1>
+  {{title}}
+</h1>
+
+<select [(ngModel)]="selectedCity" (ngModelChange)="onChange($event)">
+    <option [ngValue]="i" *ngFor="let i of cities">{{i.name}}</option>
+</select>
+&nbsp;
+<select>
+    <option [ngValue]="i" *ngFor="let i of districts">{{i}}</option>
+</select>
+
+<hr>
+
+{{ selectedCity | json }}

@@ -1,0 +1,14 @@
+# 建議安裝的軟體與安裝順序
+
+1.  安裝 Git
+    https://git-scm.com/
+
+2.  Visual Studio Code
+    https://code.visualstudio.com/
+
+3.  在 Visual Studio Code 安裝 Live Server
+    <Note> ritwickdey.liveserver
+
+4.  安裝 Node.js 與 Angular，詳細步驟請參見:
+    Lab_SetupAnuglar_Win.txt
+

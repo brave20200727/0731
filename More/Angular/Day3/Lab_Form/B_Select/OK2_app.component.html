@@ -1,0 +1,22 @@
+<form class="form-horizontal">
+  <fieldset>
+  
+  <!-- Form Name -->
+  <legend>Lab Form</legend>
+  
+  <!-- Select Basic -->
+  <div class="form-group">
+    <label class="col-md-4 control-label" for="city">城市:</label>
+    <div class="col-md-4">
+      <select [(ngModel)]="selectedCity" id="city" name="city" class="form-control">
+        <option *ngFor="let cityItem of cityList" [value]="cityItem.id">
+          {{cityItem.text}}
+        </option>
+      </select>
+    </div>
+  </div>
+  
+  </fieldset>
+  <div>{{selectedCity}}</div>
+</form>
+       

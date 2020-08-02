@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+</head>
+<body>
+    <input type="text">
+    <input type="button" id="btnGo" value="Go">
+    <div id="debug"></div>
+    <script>
+    
+        function longTimeWorkAsync() {
+            var objPromise = new Promise(function (resolve, reject) {
+                if (typeof(window.Worker) === "undefined") {
+                    reject("not support multi-thread worker.");
+                }
+                else {
+                    var w = new Worker("longTimeWork.js");
+                    w.onmessage = function (e) {
+                        w.terminate();
+                        resolve(e.data);
+                    }            
+                }
+
+            });
+            return objPromise;
+        }
+        
+        btnGo.onclick = function () {
+            longTimeWorkAsync().then(function (data) {
+                debug.innerText = data;
+            }).catch(function (err) {
+                debug.innerText = err;
+            })
+        }
+
+        
+        
+    </script>
+</body>
+</html>
