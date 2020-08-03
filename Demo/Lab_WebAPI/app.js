@@ -57,3 +57,14 @@ app.get("/home/news", function(request, response) {
         }    
     );
 })
+
+app.post("/home/news", function(request, response) {
+    connection.query(
+        "INSERT INTO news SET title = ?, ymd = ? ",
+        [
+            request.body.title,
+            request.body.ymd
+        ]
+    );
+    response.send("row inserted.");
+})
